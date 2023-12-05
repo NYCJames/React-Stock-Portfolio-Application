@@ -11,48 +11,9 @@ export function AppProvider({ children }) {
     "MSFT",
     "NVDA",
     "AMD",
+    "ED",
+    "GLD",
   ]);
-  const [stockQuotes, setStockQuotes] = useState([]);
-
-  useEffect(function () {
-    let isMounted = true;
-
-    async function fetchQuote() {
-      try {
-        const response = await Promise.all(
-          stockList.map(function (value) {
-            return FinnHub.get(`/quote`, {
-              params: {
-                symbol: value,
-              },
-            });
-          })
-        );
-        //   console.log(response);
-
-        const data = response.map(function (value) {
-          return {
-            ticker: value.config.params.symbol,
-            data: value.data,
-          };
-        });
-        console.log(data);
-
-        if (isMounted) {
-          setStockQuotes([...data]);
-          console.log(stockQuotes);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchQuote();
-
-    return function () {
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <AppContext.Provider value={{ stockList, setStockList }}>

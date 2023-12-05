@@ -1,11 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useGlobalContext from "../Context";
+import StockRows from "./StockRows";
+import FinnHub from "../apis/FinnHub";
 
 function Portfolio() {
+  const [stockQuotes, setStockQuotes] = useState([]);
   const { stockList } = useGlobalContext();
-  //   console.log(stockList);
+  //   console.log(stockQuotes);
 
-  return <div>{stockList}</div>;
+  useEffect(function () {
+    let isMounted = true;
+
+    async function fetchQuote() {
+      try {
+        const response = await Promise.all(
+          stockList.map(function (value) {
+            return FinnHub.get(`/quote`, {
+              params: {
+                symbol: value,
+              },
+            });
+          })
+        );
+        //   console.log(response);
+
+        const data = response.map(function (value) {
+          return {
+            ticker: value.config.params.symbol,
+            data: value.data,
+          };
+        });
+        console.log(data);
+
+        if (isMounted) {
+          setStockQuotes(data);
+          console.log(stockQuotes);
+        }
+      } catch (error) {
+        console.log(`err`, error);
+      }
+    }
+
+    fetchQuote();
+
+    return function () {
+      isMounted = false;
+    };
+  }, []);
+
+  return (
+    <div>
+      <table className="table hover mt-5">
+        <thead style={{ color: "rgb(79,89,102" }}>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Last</th>
+            <th scope="col">Change</th>
+            <th scope="col">% Change</th>
+            <th scope="col">High</th>
+            <th scope="col">Low</th>
+            <th scope="col">Open</th>
+            <th scope="col">PrevClose</th>
+            <th scope="col">Time?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {stockQuotes.map(function (value) {
+            return (
+              <StockRows
+                key={value.ticker}
+                ticker={value.ticker}
+                last={value.data.c}
+                change={value.data.d}
+                pctchange={value.data.dp}
+                high={value.data.h}
+                low={value.data.l}
+                open={value.data.o}
+                prevclose={value.data.pc}
+                time={value.data.t}
+              ></StockRows>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default Portfolio;
