@@ -3,7 +3,7 @@ import useGlobalContext from "../Context";
 
 function Portfolio() {
   const { stockList } = useGlobalContext();
-  console.log(stockList);
+  //   console.log(stockList);
 
   return <div>{stockList}</div>;
 }
