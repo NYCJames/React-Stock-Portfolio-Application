@@ -8,45 +8,48 @@ function Portfolio() {
   const { stockList } = useGlobalContext();
   //   console.log(stockQuotes);
 
-  useEffect(function () {
-    let isMounted = true;
+  useEffect(
+    function () {
+      let isMounted = true;
 
-    async function fetchQuote() {
-      try {
-        const response = await Promise.all(
-          stockList.map(function (value) {
-            return FinnHub.get(`/quote`, {
-              params: {
-                symbol: value,
-              },
-            });
-          })
-        );
-        //   console.log(response);
+      async function fetchQuote() {
+        try {
+          const response = await Promise.all(
+            stockList.map(function (value) {
+              return FinnHub.get(`/quote`, {
+                params: {
+                  symbol: value,
+                },
+              });
+            })
+          );
+          //   console.log(response);
 
-        const data = response.map(function (value) {
-          return {
-            ticker: value.config.params.symbol,
-            data: value.data,
-          };
-        });
-        console.log(data);
+          const data = response.map(function (value) {
+            return {
+              ticker: value.config.params.symbol,
+              data: value.data,
+            };
+          });
+          console.log(data);
 
-        if (isMounted) {
-          setStockQuotes(data);
-          console.log(stockQuotes);
+          if (isMounted) {
+            setStockQuotes(data);
+            console.log(stockQuotes);
+          }
+        } catch (error) {
+          console.log(`err`, error);
         }
-      } catch (error) {
-        console.log(`err`, error);
       }
-    }
 
-    fetchQuote();
+      fetchQuote();
 
-    return function () {
-      isMounted = false;
-    };
-  }, []);
+      return function () {
+        isMounted = false;
+      };
+    },
+    [stockList]
+  );
 
   return (
     <div>

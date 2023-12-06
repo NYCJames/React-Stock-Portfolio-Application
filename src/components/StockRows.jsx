@@ -1,4 +1,5 @@
 import React from "react";
+import { PiCaretUpFill, PiCaretDownFill } from "react-icons/pi";
 
 function StockRows({
   ticker,
@@ -15,6 +16,14 @@ function StockRows({
     return value > 0 ? "success" : "danger";
   }
 
+  function changeIcon(value) {
+    return value > 0 ? (
+      <PiCaretUpFill></PiCaretUpFill>
+    ) : (
+      <PiCaretDownFill></PiCaretDownFill>
+    );
+  }
+
   const temp = new Date(1701723600);
   //   console.log(temp.toLocaleTimeString());
   //   console.log(temp.toString());
@@ -23,8 +32,13 @@ function StockRows({
     <tr className="table-row">
       <th scope="row">{ticker}</th>
       <td>{last}</td>
-      <td className={`text-${changeColor(change)}`}>{change}</td>
-      <td className={`text-${changeColor(pctchange)}`}>{pctchange}</td>
+      <td className={`text-${changeColor(change)}`}>
+        {change}
+        {changeIcon(change)}
+      </td>
+      <td className={`text-${changeColor(pctchange)}`}>
+        {pctchange} {changeIcon(pctchange)}
+      </td>
       <td>{high}</td>
       <td>{low}</td>
       <td>{open}</td>
