@@ -5,18 +5,16 @@ const AppContext = createContext();
 
 export function AppProvider({ children }) {
   //localstorage
-  const [stockList, setStockList] = useState([
-    "AAPL",
-    "GOOGL",
-    "MSFT",
-    "NVDA",
-    "AMD",
-    "ED",
-    "GLD",
-  ]);
+  const [stockList, setStockList] = useState([]);
+
+  function fetchLocalStockList() {}
+
+  function addToStockList(symbol) {
+    setStockList([...stockList, symbol]);
+  }
 
   return (
-    <AppContext.Provider value={{ stockList, setStockList }}>
+    <AppContext.Provider value={{ stockList, setStockList, addToStockList }}>
       {children}
     </AppContext.Provider>
   );

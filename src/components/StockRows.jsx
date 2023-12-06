@@ -24,26 +24,32 @@ function StockRows({
     );
   }
 
+  function handleClick(event) {
+    //go to details
+    console.log(event.target.parentElement.id);
+  }
+
   const temp = new Date(1701723600);
   //   console.log(temp.toLocaleTimeString());
   //   console.log(temp.toString());
 
   return (
-    <tr className="table-row">
+    <tr id={ticker} className="table-row" onClick={handleClick}>
       <th scope="row">{ticker}</th>
-      <td>{last}</td>
-      <td className={`text-${changeColor(change)}`}>
-        {change}
+      <td className="text-end">{Number(last).toFixed(3)}</td>
+      <td className={`text-end text-${changeColor(change)}`}>
+        {Number(change).toFixed(3)}
         {changeIcon(change)}
       </td>
-      <td className={`text-${changeColor(pctchange)}`}>
-        {pctchange} {changeIcon(pctchange)}
+      <td className={`text-end text-${changeColor(pctchange)}`}>
+        {Number(pctchange).toFixed(4)}%{changeIcon(pctchange)}
       </td>
-      <td>{high}</td>
-      <td>{low}</td>
-      <td>{open}</td>
-      <td>{prevclose}</td>
-      <td>{new Date(time).toTimeString()}</td>
+      <td className="text-end">{Number(high).toFixed(3)}</td>
+      <td className="text-end">{Number(low).toFixed(3)}</td>
+      <td className="text-end">{Number(open).toFixed(3)}</td>
+      <td className="text-end">{Number(prevclose).toFixed(3)}</td>
+      <td className="text-end">{new Date(time).toTimeString()}</td>
+      <td>{time}</td>
     </tr>
   );
 }

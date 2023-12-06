@@ -31,11 +31,11 @@ function Portfolio() {
               data: value.data,
             };
           });
-          console.log(data);
+          //   console.log(data);
 
           if (isMounted) {
             setStockQuotes(data);
-            console.log(stockQuotes);
+            // console.log(stockQuotes);
           }
         } catch (error) {
           console.log(`err`, error);
@@ -53,7 +53,7 @@ function Portfolio() {
 
   return (
     <div>
-      <table className="table hover mt-5">
+      <table className="table table-hover hover mt-5 table-striped">
         <thead style={{ color: "rgb(79,89,102" }}>
           <tr>
             <th scope="col">Name</th>
