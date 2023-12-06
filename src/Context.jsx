@@ -10,7 +10,21 @@ export function AppProvider({ children }) {
   function fetchLocalStockList() {}
 
   function addToStockList(symbol) {
+    if (stockList.includes(symbol)) {
+      return;
+    }
     setStockList([...stockList, symbol]);
+  }
+
+  function deleteFromStockList(symbol) {
+    if (!stockList.includes(symbol)) {
+      return;
+    }
+
+    const newStockList = stockList.filter(function (value) {
+      return value !== symbol;
+    });
+    setStockList(newStockList);
   }
 
   return (

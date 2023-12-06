@@ -17,7 +17,7 @@ function App() {
       <Route path="/">
         <Route index element={<StockOverviewPage></StockOverviewPage>}></Route>
         <Route
-          path="detail/:ticker"
+          path="details/:ticker"
           element={<StockDetailsPage></StockDetailsPage>}
         ></Route>
       </Route>

@@ -1,5 +1,6 @@
 import React from "react";
 import { PiCaretUpFill, PiCaretDownFill } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
 function StockRows({
   ticker,
@@ -12,6 +13,8 @@ function StockRows({
   prevclose,
   time,
 }) {
+  const navigate = useNavigate();
+
   function changeColor(value) {
     return value > 0 ? "success" : "danger";
   }
@@ -24,9 +27,11 @@ function StockRows({
     );
   }
 
-  function handleClick(event) {
-    //go to details
-    console.log(event.target.parentElement.id);
+  function goToDetailsPage() {
+    // console.log(event.target.parentElement.id);
+    // console.log(ticker);
+
+    navigate(`details/${ticker}`);
   }
 
   const temp = new Date(1701723600);
@@ -34,15 +39,19 @@ function StockRows({
   //   console.log(temp.toString());
 
   return (
-    <tr id={ticker} className="table-row" onClick={handleClick}>
+    <tr
+      id={ticker}
+      className="table-row"
+      onClick={goToDetailsPage}
+      style={{ cursor: `pointer` }}
+    >
       <th scope="row">{ticker}</th>
       <td className="text-end">{Number(last).toFixed(3)}</td>
       <td className={`text-end text-${changeColor(change)}`}>
-        {Number(change).toFixed(3)}
-        {changeIcon(change)}
+        {Number(change).toFixed(3)} {changeIcon(change)}
       </td>
       <td className={`text-end text-${changeColor(pctchange)}`}>
-        {Number(pctchange).toFixed(4)}%{changeIcon(pctchange)}
+        {Number(pctchange).toFixed(4)}% {changeIcon(pctchange)}
       </td>
       <td className="text-end">{Number(high).toFixed(3)}</td>
       <td className="text-end">{Number(low).toFixed(3)}</td>

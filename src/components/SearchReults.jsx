@@ -4,10 +4,11 @@ import useGlobalContext from "../Context";
 function SearchReults({ name, symbol, setQuery }) {
   const { stockList, addToStockList } = useGlobalContext();
 
-  function handleSelectStock(event) {
+  function handleSelectStock() {
     // console.log(event.target.id);
 
-    addToStockList(event.target.id);
+    // addToStockList(event.target.id);
+    addToStockList(symbol);
     // console.log(stockList);
 
     setQuery(``);
