@@ -57,14 +57,30 @@ function Portfolio() {
         <thead style={{ color: "rgb(79,89,102" }}>
           <tr>
             <th scope="col">Name</th>
-            <th scope="col">Last</th>
-            <th scope="col">Change</th>
-            <th scope="col">% Change</th>
-            <th scope="col">High</th>
-            <th scope="col">Low</th>
-            <th scope="col">Open</th>
-            <th scope="col">PrevClose</th>
-            <th scope="col">Time?</th>
+            <th scope="col" className="text-center">
+              Last
+            </th>
+            <th scope="col" className="text-center">
+              Change
+            </th>
+            <th scope="col" className="text-center">
+              % Change
+            </th>
+            <th scope="col" className="text-center">
+              High
+            </th>
+            <th scope="col" className="text-center">
+              Low
+            </th>
+            <th scope="col" className="text-center">
+              Open
+            </th>
+            <th scope="col" className="text-center">
+              PrevClose
+            </th>
+            <th scope="col" className="text-center">
+              Time
+            </th>
           </tr>
         </thead>
         <tbody>

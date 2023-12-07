@@ -1,19 +1,27 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import FinnHub from "./apis/FinnHub";
+import { json } from "react-router-dom";
 
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
   //localstorage
-  const [stockList, setStockList] = useState([]);
+  const [stockList, setStockList] = useState(fetchLocalStockList());
 
-  function fetchLocalStockList() {}
+  function fetchLocalStockList() {
+    // console.log(JSON.parse(localStorage.getItem(`stockList`)));
+    return JSON.parse(localStorage.getItem(`stockList`))
+      ? JSON.parse(localStorage.getItem(`stockList`))
+      : [];
+  }
 
   function addToStockList(symbol) {
     if (stockList.includes(symbol)) {
       return;
     }
     setStockList([...stockList, symbol]);
+
+    localStorage.setItem(`stockList`, JSON.stringify([...stockList, symbol]));
   }
 
   function deleteFromStockList(symbol) {

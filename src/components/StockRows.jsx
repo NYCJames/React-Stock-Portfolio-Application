@@ -34,9 +34,12 @@ function StockRows({
     navigate(`details/${ticker}`);
   }
 
-  const temp = new Date(1701723600);
-  //   console.log(temp.toLocaleTimeString());
-  //   console.log(temp.toString());
+  //   const temp = new Date(1701883080 * 1000);
+  //   const temp = new Intl.DateTimeFormat(`en-US`);
+  //   temp.setTime(1701883080);
+  //   console.log(temp);
+  //   temp.setMilliseconds(1701883080);
+  //   console.log(new Date(time * 1000).toLocaleTimeString());
 
   return (
     <tr
@@ -57,8 +60,8 @@ function StockRows({
       <td className="text-end">{Number(low).toFixed(3)}</td>
       <td className="text-end">{Number(open).toFixed(3)}</td>
       <td className="text-end">{Number(prevclose).toFixed(3)}</td>
-      <td className="text-end">{new Date(time).toTimeString()}</td>
-      <td>{time}</td>
+      <td className="text-end">{new Date(time * 1000).toLocaleTimeString()}</td>
+      {/* <td>{time}</td> */}
     </tr>
   );
 }
