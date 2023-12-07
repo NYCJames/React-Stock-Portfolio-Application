@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import FinnHub from "./apis/FinnHub";
-import { json } from "react-router-dom";
+import { PiCaretUpFill, PiCaretDownFill } from "react-icons/pi";
 
 const AppContext = createContext();
 
@@ -13,6 +13,18 @@ export function AppProvider({ children }) {
     return JSON.parse(localStorage.getItem(`stockList`))
       ? JSON.parse(localStorage.getItem(`stockList`))
       : [];
+  }
+
+  function changeColor(value) {
+    return value > 0 ? "success" : "danger";
+  }
+
+  function changeIcon(value) {
+    return value > 0 ? (
+      <PiCaretUpFill></PiCaretUpFill>
+    ) : (
+      <PiCaretDownFill></PiCaretDownFill>
+    );
   }
 
   function addToStockList(symbol) {
@@ -36,7 +48,15 @@ export function AppProvider({ children }) {
   }
 
   return (
-    <AppContext.Provider value={{ stockList, setStockList, addToStockList }}>
+    <AppContext.Provider
+      value={{
+        stockList,
+        setStockList,
+        addToStockList,
+        changeColor,
+        changeIcon,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

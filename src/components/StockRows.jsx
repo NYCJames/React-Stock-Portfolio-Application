@@ -1,6 +1,7 @@
 import React from "react";
 import { PiCaretUpFill, PiCaretDownFill } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import useGlobalContext from "../Context";
 
 function StockRows({
   ticker,
@@ -14,18 +15,7 @@ function StockRows({
   time,
 }) {
   const navigate = useNavigate();
-
-  function changeColor(value) {
-    return value > 0 ? "success" : "danger";
-  }
-
-  function changeIcon(value) {
-    return value > 0 ? (
-      <PiCaretUpFill></PiCaretUpFill>
-    ) : (
-      <PiCaretDownFill></PiCaretDownFill>
-    );
-  }
+  const { changeColor, changeIcon } = useGlobalContext();
 
   function goToDetailsPage() {
     // console.log(event.target.parentElement.id);

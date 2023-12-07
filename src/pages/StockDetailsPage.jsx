@@ -2,10 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import FinnHub from "../apis/FinnHub";
 import Polygon from "../apis/Polygon";
+import StockChart from "../components/StockChart";
+import useGlobalContext from "../Context";
+
+function extractChartData(item) {
+  //   console.log(item.data.results);
+  return item.data.results;
+}
 
 function StockDetailsPage() {
   const { ticker } = useParams();
   const [currQuote, setCurrQuote] = useState();
+  const [chartData, setChartData] = useState();
+
+  const { changeColor, changeIcon } = useGlobalContext();
 
   useEffect(function () {
     async function fetchHistoricalData() {
@@ -43,6 +53,9 @@ function StockDetailsPage() {
           //   console.log(`prev time = ${time}`);
         }
         // console.log(time);
+
+        ////// state hook to track selected timeframe
+        ////// OR use navigate to url and use params to extract selected timeframe with default of 1d
         const oneDayAgo = time - 24 * 60 * 60 * 1000;
         const oneWeekAgo = time - 24 * 60 * 60 * 7 * 1000;
         const oneMonthAgo = time - 24 * 60 * 60 * 30 * 1000;
@@ -105,7 +118,14 @@ function StockDetailsPage() {
           // }
           //   ),
         ]);
-        console.log(response);
+        // console.log(response);
+
+        setChartData({
+          day: extractChartData(response[0]),
+          week: extractChartData(response[1]),
+          month: extractChartData(response[2]),
+          year: extractChartData(response[3]),
+        });
       } catch (error) {
         console.log(error);
       }
@@ -115,7 +135,23 @@ function StockDetailsPage() {
   }, []);
 
   //   console.log(currQuote);
-  return <div>{ticker}</div>;
+  //   console.log(chartData);
+  return (
+    <div>
+      <h1>Quote: ${ticker}</h1>
+      <h4>{currQuote && currQuote.pc}</h4>
+      <h2>{currQuote && currQuote.c}</h2>
+      <h3 className={`text-${changeColor(currQuote.d)}`}>
+        {currQuote && currQuote.d} {changeIcon(currQuote.d)}
+      </h3>
+      <h3 className={`text-${changeColor(currQuote.dp)}`}>
+        {currQuote && currQuote.dp}% {changeIcon(currQuote.dp)}
+      </h3>
+      <h4>{currQuote && currQuote.o}</h4>
+      <h4>{currQuote && currQuote.c}</h4>
+      {/* {chartData && <StockChart></StockChart>} */}
+    </div>
+  );
 }
 
 export default StockDetailsPage;
