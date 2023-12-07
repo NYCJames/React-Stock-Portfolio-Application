@@ -60,7 +60,7 @@ function StockRows({
       <td className="text-end">{Number(low).toFixed(3)}</td>
       <td className="text-end">{Number(open).toFixed(3)}</td>
       <td className="text-end">{Number(prevclose).toFixed(3)}</td>
-      <td className="text-end">{new Date(time * 1000).toLocaleTimeString()}</td>
+      <td className="text-end">{new Date(time * 1000).toLocaleString()}</td>
       {/* <td>{time}</td> */}
     </tr>
   );

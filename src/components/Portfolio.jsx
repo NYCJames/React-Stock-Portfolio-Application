@@ -78,8 +78,8 @@ function Portfolio() {
             <th scope="col" className="text-center">
               PrevClose
             </th>
-            <th scope="col" className="text-center">
-              Time
+            <th scope="col" className="text-end">
+              Last Updated
             </th>
           </tr>
         </thead>
