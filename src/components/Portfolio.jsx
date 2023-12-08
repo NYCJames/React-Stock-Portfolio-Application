@@ -23,7 +23,7 @@ function Portfolio() {
               });
             })
           );
-          console.log(response);
+          //   console.log(response);
 
           const data = response.map(function (value) {
             return {
@@ -78,8 +78,11 @@ function Portfolio() {
             <th scope="col" className="text-center">
               PrevClose
             </th>
-            <th scope="col" className="text-end">
+            <th scope="col" className="text-center">
               Last Updated
+            </th>
+            <th scope="col" className="text-center">
+              Remove
             </th>
           </tr>
         </thead>

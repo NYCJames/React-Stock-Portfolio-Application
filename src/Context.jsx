@@ -41,18 +41,30 @@ export function AppProvider({ children }) {
       return;
     }
 
-    const newStockList = stockList.filter(function (value) {
-      return value !== symbol;
-    });
-    setStockList(newStockList);
+    // const newStockList = stockList.filter(function (value) {
+    //   return value !== symbol;
+    // });
+    // console.log(newStockList);
+
+    // console.log(stockList);
+    // setStockList(newStockList);
+    setStockList(
+      stockList.filter(function (value) {
+        return value !== symbol;
+      })
+    );
+    // localStorage.setItem(`stockList`, JSON.stringify(newStockList));
+    localStorage.setItem(`stockList`, JSON.stringify(stockList));
+
+    // console.log(stockList);
   }
 
   return (
     <AppContext.Provider
       value={{
         stockList,
-        setStockList,
         addToStockList,
+        deleteFromStockList,
         changeColor,
         changeIcon,
       }}

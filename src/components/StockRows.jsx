@@ -15,13 +15,19 @@ function StockRows({
   time,
 }) {
   const navigate = useNavigate();
-  const { changeColor, changeIcon } = useGlobalContext();
+  const { changeColor, changeIcon, deleteFromStockList } = useGlobalContext();
 
-  function goToDetailsPage() {
+  function handleClickStockRow(event) {
     // console.log(event.target.parentElement.id);
     // console.log(ticker);
+    // console.log(event.target.classList.contains(`delete-button`));
 
-    navigate(`details/${ticker}`);
+    if (event.target.classList.contains(`delete-button`)) {
+      deleteFromStockList(ticker);
+      //   console.log(stockList);
+    } else {
+      navigate(`details/${ticker}`);
+    }
   }
 
   //   const temp = new Date(1701883080 * 1000);
@@ -35,7 +41,7 @@ function StockRows({
     <tr
       id={ticker}
       className="table-row"
-      onClick={goToDetailsPage}
+      onClick={handleClickStockRow}
       style={{ cursor: `pointer` }}
     >
       <th scope="row">{ticker}</th>
@@ -50,8 +56,13 @@ function StockRows({
       <td className="text-end">{Number(low).toFixed(3)}</td>
       <td className="text-end">{Number(open).toFixed(3)}</td>
       <td className="text-end">{Number(prevclose).toFixed(3)}</td>
-      <td className="text-end">{new Date(time * 1000).toLocaleString()}</td>
+      <td className="text-center">{new Date(time * 1000).toLocaleString()}</td>
       {/* <td>{time}</td> */}
+      <td className="text-center">
+        <button className="btn btn-danger btn-sm ml-3 d-inline-block delete-button">
+          Remove
+        </button>
+      </td>
     </tr>
   );
 }
