@@ -12,7 +12,7 @@ export function AppProvider({ children }) {
     // console.log(JSON.parse(localStorage.getItem(`stockList`)));
     return JSON.parse(localStorage.getItem(`stockList`))
       ? JSON.parse(localStorage.getItem(`stockList`))
-      : [`AAPL`, `GOOGL`, `MSFT`, `AMZN`, `VIXY`];
+      : [`SPY`, `AAPL`, `GOOGL`, `MSFT`, `AMZN`, `VIXY`];
   }
 
   function changeColor(value) {

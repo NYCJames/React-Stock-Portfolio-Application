@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Chart from "react-apexcharts";
-import { findDOMNode } from "react-dom";
 
 function StockChart({ chartData, ticker }) {
+  //   console.log(chartData);
   const { day, week, month, year } = chartData;
   const dollarTicker = `$${ticker}`;
   const [timeframe, setTimeframe] = useState(`day`);
@@ -22,6 +22,7 @@ function StockChart({ chartData, ticker }) {
   //   console.log(series);
 
   const options = {
+    colors: [assignChartColor()],
     title: {
       text: dollarTicker,
       align: `center`,
@@ -32,8 +33,20 @@ function StockChart({ chartData, ticker }) {
     chart: {
       id: `Stock Data`,
       animations: {
-        speed: 1000,
+        enabled: false,
+        speed: 10,
+        animateGradually: {
+          enabled: true,
+          delay: 50,
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 50,
+        },
       },
+    },
+    stroke: {
+      curve: `straight`,
     },
     xaxis: {
       type: `datetime`,
@@ -63,7 +76,7 @@ function StockChart({ chartData, ticker }) {
   };
 
   function handleSetTimeframe(event) {
-    console.log(event.target.innerText.toLowerCase());
+    // console.log(event.target.innerText.toLowerCase());
     setTimeframe(event.target.innerText.toLowerCase());
 
     // console.log(timeframe);
@@ -87,6 +100,15 @@ function StockChart({ chartData, ticker }) {
   function assignButtonClasses(value) {
     return `btn m-1 btn-${timeframe === value ? `` : `outline-`}primary`;
   }
+
+  function assignChartColor() {
+    const currData = returnCorrectData();
+    // console.log(currData[currData.length - 1][`y`] - currData[0][`y`]);
+    return currData[currData.length - 1][`y`] - currData[0][`y`] > 0
+      ? `#26C281`
+      : `#ed3419`;
+  }
+  //   assignChartColor();
 
   return (
     <div className="mt-5 p-4 shadow-sm bg-white">
