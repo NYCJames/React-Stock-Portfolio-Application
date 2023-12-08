@@ -17,7 +17,7 @@ function extractChartData(item) {
       y: value.c,
     };
   });
-  console.log(points);
+  //   console.log(points);
 
   return points;
 }
@@ -60,6 +60,8 @@ function StockDetailsPage() {
         if (marketOpen) {
           //   time = today.getTime();
           //   console.log(`time = ${time}`);
+
+          // api does not return data from current day so use old time as well
           time = currentStatus[0][`data`][`t`] * 1000;
         } else {
           time = currentStatus[0][`data`][`t`] * 1000;
@@ -69,26 +71,26 @@ function StockDetailsPage() {
 
         ////// state hook to track selected timeframe
         ////// OR use navigate to url and use params to extract selected timeframe with default of 1d
-        const oneDayAgo = time - 36 * 60 * 60 * 1000;
-        const oneWeekAgo = time - 24 * 60 * 60 * 7 * 1000;
-        const oneMonthAgo = time - 24 * 60 * 60 * 30 * 1000;
-        const oneYearAgo = time - 24 * 60 * 60 * 365 * 1000;
+        const oneDayAgo = time - 24 * 60 * 60 * 1000 - 43200000;
+        const oneWeekAgo = time - 24 * 60 * 60 * 7 * 1000 - 43200000;
+        const oneMonthAgo = time - 24 * 60 * 60 * 30 * 1000 - 43200000;
+        const oneYearAgo = time - 24 * 60 * 60 * 365 * 1000 - 43200000;
         // console.log(oneDayAgo, oneWeekAgo, oneMonthAgo, oneYearAgo);
 
         ////// fetch historical data
         // test: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/minute/1701810000000/1701896400000?adjusted=true&sort=asc&limit=50000&apiKey=ApHk9sz3p3OdqFNA7QuFsJTTNjT3uURY
 
         const response = await Promise.all([
-          //   Polygon.get(
-          //     `v2/aggs/ticker/${ticker}/range/${`1`}/${`minute`}/${oneDayAgo}/${time}`,
-          //     {
-          //       params: {
-          //         adjusted: true,
-          //         sort: `asc`,
-          //         limit: 50000,
-          //       },
-          //     }
-          //   ),
+          Polygon.get(
+            `v2/aggs/ticker/${ticker}/range/${`1`}/${`minute`}/${oneDayAgo}/${time}`,
+            {
+              params: {
+                adjusted: true,
+                sort: `asc`,
+                limit: 50000,
+              },
+            }
+          ),
           Polygon.get(
             `v2/aggs/ticker/${ticker}/range/${`1`}/${`minute`}/${oneWeekAgo}/${time}`,
             {
@@ -99,26 +101,26 @@ function StockDetailsPage() {
               },
             }
           ),
-          //   Polygon.get(
-          //     `v2/aggs/ticker/${ticker}/range/${`1`}/${`minute`}/${oneMonthAgo}/${time}`,
-          //     {
-          //       params: {
-          //         adjusted: true,
-          //         sort: `asc`,
-          //         limit: 50000,
-          //       },
-          //     }
-          //   ),
-          //   Polygon.get(
-          //     `v2/aggs/ticker/${ticker}/range/${`2`}/${`minute`}/${oneYearAgo}/${time}`,
-          //     {
-          //       params: {
-          //         adjusted: true,
-          //         sort: `asc`,
-          //         limit: 50000,
-          //       },
-          //     }
-          //   ),
+          Polygon.get(
+            `v2/aggs/ticker/${ticker}/range/${`1`}/${`minute`}/${oneMonthAgo}/${time}`,
+            {
+              params: {
+                adjusted: true,
+                sort: `asc`,
+                limit: 50000,
+              },
+            }
+          ),
+          Polygon.get(
+            `v2/aggs/ticker/${ticker}/range/${`2`}/${`minute`}/${oneYearAgo}/${time}`,
+            {
+              params: {
+                adjusted: true,
+                sort: `asc`,
+                limit: 50000,
+              },
+            }
+          ),
 
           //   Polygon.get(
           //     `v2/aggs/ticker/AAPL/range/1/minute/1701810000000/1701896400000?adjusted=true&sort=asc&limit=50000`
@@ -131,13 +133,13 @@ function StockDetailsPage() {
           // }
           //   ),
         ]);
-        console.log(response);
+        // console.log(response);
 
         setChartData({
-          //   day: extractChartData(response[0]),
-          week: extractChartData(response[0]),
-          //   month: extractChartData(response[2]),
-          //   year: extractChartData(response[3]),
+          day: extractChartData(response[0]),
+          week: extractChartData(response[1]),
+          month: extractChartData(response[2]),
+          year: extractChartData(response[3]),
         });
       } catch (error) {
         console.log(error);
@@ -148,7 +150,7 @@ function StockDetailsPage() {
   }, []);
 
   //   console.log(currQuote);
-  //   console.log(chartData);
+  // console.log(chartData);
   return (
     <div>
       <h1>Quote: ${ticker}</h1>
