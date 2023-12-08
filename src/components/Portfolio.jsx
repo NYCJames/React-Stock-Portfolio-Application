@@ -38,7 +38,8 @@ function Portfolio() {
             // console.log(stockQuotes);
           }
         } catch (error) {
-          console.log(`err`, error);
+          //   console.log(`err`, error);
+          alert(`${error.response.data.error}\nPlease try again in 1 minute.`);
         }
       }
 

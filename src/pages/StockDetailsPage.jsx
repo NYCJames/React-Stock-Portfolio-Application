@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import FinnHub from "../apis/FinnHub";
 import Polygon from "../apis/Polygon";
 import StockChart from "../components/StockChart";
-import useGlobalContext from "../Context";
+import StockQuote from "../components/StockQuote";
+import CompanyProfile from "../components/CompanyProfile";
 
 function extractChartData(item) {
   //   console.log(item.data.results);
@@ -26,8 +27,7 @@ function StockDetailsPage() {
   const { ticker } = useParams();
   const [currQuote, setCurrQuote] = useState();
   const [chartData, setChartData] = useState();
-
-  const { changeColor, changeIcon } = useGlobalContext();
+  const [profileData, setProfileData] = useState({});
 
   useEffect(function () {
     async function fetchHistoricalData() {
@@ -42,7 +42,9 @@ function StockDetailsPage() {
               symbol: ticker,
             },
           }),
-          Polygon.get(`v1/marketstatus/now`),
+          Polygon.get(
+            `v1/marketstatus/now?apiKey=EdnE88bbigxrc68qlgtS4313p5h1mUpa`
+          ),
         ]);
         // console.log(currentStatus);
         setCurrQuote(currentStatus[0][`data`]);
@@ -88,6 +90,7 @@ function StockDetailsPage() {
                 adjusted: true,
                 sort: `asc`,
                 limit: 50000,
+                apiKey: `ApHk9sz3p3OdqFNA7QuFsJTTNjT3uURY`,
               },
             }
           ),
@@ -98,6 +101,7 @@ function StockDetailsPage() {
                 adjusted: true,
                 sort: `asc`,
                 limit: 50000,
+                apiKey: `ApHk9sz3p3OdqFNA7QuFsJTTNjT3uURY`,
               },
             }
           ),
@@ -108,6 +112,7 @@ function StockDetailsPage() {
                 adjusted: true,
                 sort: `asc`,
                 limit: 50000,
+                apiKey: `ApHk9sz3p3OdqFNA7QuFsJTTNjT3uURY`,
               },
             }
           ),
@@ -118,6 +123,7 @@ function StockDetailsPage() {
                 adjusted: true,
                 sort: `asc`,
                 limit: 50000,
+                apiKey: `ApHk9sz3p3OdqFNA7QuFsJTTNjT3uURY`,
               },
             }
           ),
@@ -142,11 +148,30 @@ function StockDetailsPage() {
           year: extractChartData(response[3]),
         });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
+        alert(`${error.response.data.error}\nPlease try again in 1 minute.`);
       }
     }
 
     fetchHistoricalData();
+  }, []);
+
+  useEffect(function () {
+    async function fetchCompanyProfile() {
+      try {
+        const { data } =
+          await Polygon.get(`/v3/reference/tickers/${ticker}?apiKey=ApHk9sz3p3OdqFNA7QuFsJTTNjT3uURY
+                `);
+        console.log(data.results);
+
+        setProfileData(data.results);
+      } catch (error) {
+        // console.log(error);
+        alert(`${error.response.data.error}\nPlease try again in 1 minute.`);
+      }
+    }
+
+    fetchCompanyProfile();
   }, []);
 
   //   console.log(currQuote);
@@ -155,24 +180,16 @@ function StockDetailsPage() {
     <div>
       <h1>Quote: ${ticker}</h1>
 
-      {currQuote && (
-        <>
-          <h4>{currQuote.pc}</h4>
-          <h2>{currQuote.c}</h2>
-          <h3 className={`text-${changeColor(currQuote.d)}`}>
-            {currQuote.d} {changeIcon(currQuote.d)}
-          </h3>
-          <h3 className={`text-${changeColor(currQuote.dp)}`}>
-            {currQuote.dp}% {changeIcon(currQuote.dp)}
-          </h3>
-          <h4>{currQuote.o}</h4>
-          <h4>{currQuote.c}</h4>
-        </>
-      )}
+      {currQuote && <StockQuote currQuote={currQuote}></StockQuote>}
 
       {chartData && (
         <StockChart chartData={chartData} ticker={ticker}></StockChart>
       )}
+
+      <CompanyProfile
+        ticker={ticker}
+        profileData={profileData}
+      ></CompanyProfile>
     </div>
   );
 }
