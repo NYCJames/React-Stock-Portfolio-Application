@@ -23,7 +23,7 @@ function Portfolio() {
               });
             })
           );
-          //   console.log(response);
+          console.log(response);
 
           const data = response.map(function (value) {
             return {
