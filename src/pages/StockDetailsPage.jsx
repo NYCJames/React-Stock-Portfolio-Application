@@ -28,6 +28,7 @@ function StockDetailsPage() {
   const [currQuote, setCurrQuote] = useState();
   const [chartData, setChartData] = useState();
   const [profileData, setProfileData] = useState({});
+  const [logoURL, setLogoURL] = useState(``);
 
   useEffect(function () {
     async function fetchHistoricalData() {
@@ -165,6 +166,9 @@ function StockDetailsPage() {
         console.log(data.results);
 
         setProfileData(data.results);
+        setLogoURL(
+          data.results.branding.logo_url || data.results.branding.icon_url
+        );
       } catch (error) {
         // console.log(error);
         alert(`${error.response.data.error}\nPlease try again in 1 minute.`);
@@ -178,9 +182,13 @@ function StockDetailsPage() {
   // console.log(chartData);
   return (
     <div>
-      <h1>Quote: ${ticker}</h1>
-
-      {currQuote && <StockQuote currQuote={currQuote}></StockQuote>}
+      {currQuote && logoURL && (
+        <StockQuote
+          ticker={ticker}
+          currQuote={currQuote}
+          logoURL={logoURL}
+        ></StockQuote>
+      )}
 
       {chartData && (
         <StockChart chartData={chartData} ticker={ticker}></StockChart>

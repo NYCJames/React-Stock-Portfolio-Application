@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import Polygon from "../apis/Polygon";
+// import { useEffect, useState } from "react";
+// import Polygon from "../apis/Polygon";
 
 function CompanyProfile({ profileData }) {
   return (

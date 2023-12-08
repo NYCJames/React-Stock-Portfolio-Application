@@ -25,7 +25,7 @@ function App() {
   );
 
   return (
-    <main className="container">
+    <main className="container-fluid">
       <RouterProvider router={router}></RouterProvider>
     </main>
   );
