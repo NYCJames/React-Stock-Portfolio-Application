@@ -1,5 +1,4 @@
 import React from "react";
-import { PiCaretUpFill, PiCaretDownFill } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import useGlobalContext from "../Context";
 
